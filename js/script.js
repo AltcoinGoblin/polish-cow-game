@@ -1,5 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('startButton'); // Get the start button
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -17,6 +18,28 @@ playerImage.src = 'assets/images/player.png'; // Ensure this path is correct
 let isGameOver = false;
 let score = 0;            // Track the current score
 let cameraOffset = 0;     // Track how much the camera has scrolled up
+
+// Start the game when the start button is clicked
+startButton.addEventListener('click', () => {
+  // Hide the start button
+  startButton.style.display = 'none';
+
+  // Function to initialize the game
+  const startGame = () => {
+    initPlatforms();
+    backgroundMusic.play();
+    gameLoop();
+  };
+
+  // Check if the player image is already loaded
+  if (playerImage.complete) {
+    startGame(); // If the image is loaded, start the game immediately
+  } else {
+    playerImage.onload = startGame; // Otherwise, wait for the image to load
+  }
+});
+
+
 
 // Draw the score
 function drawScore() {
@@ -278,11 +301,6 @@ function gameLoop() {
       animationFrameId = requestAnimationFrame(gameLoop);
     }
   }
-// Initialize and start the game
-playerImage.onload = () => {
-    initPlatforms();
-    backgroundMusic.play(); // Start playing background music
-    gameLoop();
-  };
+
   
 
